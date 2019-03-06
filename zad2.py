@@ -36,12 +36,15 @@ XYLog = 'X is divisible by Y' if X % Y else 'X is not divisible by Y'
 
 
 #4 Add rounding for the above x/y operation. Round to 2 decimal points. Hint: look up in Google "python limiting number of decimals". (1p)
-divisibility = 87/17
+X = cs50.get_int("X: ")
+Y = cs50.get_int("Y: ")
+
+divisibility = X/Y
 print(round(divisibility,2)) # średnio działa
 print( "%.2f" % divisibility)  # działa
 
 #testowanko
-print(round(divisibility,244)) #jak pojawia sie (...0) to koniec
+print(round(divisibility,244)) #jak pojawia sie (...0) to koniec :/ 
 print("%.244f" % divisibility) #znowu dziala
 
 
