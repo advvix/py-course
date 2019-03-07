@@ -4,9 +4,11 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 #0 Use alternative way of reading inputs - using library (0.5p)
-
-x = cs50.get_int("x: ")
-y = cs50.get_int("y: ")
+x=-1
+y=-1
+while x<0 or y<0:
+    x = cs50.get_int("x: ")
+    y = cs50.get_int("y: ")
 
 #1 Perimeter & field of circles with given radius X for the first circle & Y for the second one. (1p)
 first_circleP = 2*np.pi*x
@@ -22,10 +24,14 @@ XY = False
 while XY == False:
     X = cs50.get_int("X: ")
     Y = cs50.get_int("Y: ")
-    xIsEven = X % 2 == 0
-    yIsEven = Y % 2 == 0
-    if xIsEven and yIsEven:
-        XY = X % Y == 0
+    if Y!=0:
+        xIsEven = X % 2 == 0
+        yIsEven = Y % 2 == 0
+        if xIsEven and yIsEven:
+            XY = X % Y == 0
+            print("Jest podzielna i obie sa parzyste")
+    elif Y==0:
+        print('Nie mozesz wprowadzic 0')
 
 #3 Check if X is divisible by Y (do it in one line of code), print 'X is divisible by Y' or 'X is not divisible by Y'. (1p)
 #Ad 3 Hint- use the "ternary operator" as we did calculating xIsEvenLog above.
@@ -44,7 +50,7 @@ print(round(divisibility,2)) # średnio działa
 print( "%.2f" % divisibility)  # działa
 
 #testowanko
-print(round(divisibility,244)) #jak pojawia sie (...0) to koniec :/ 
+print(round(divisibility,244)) #jak pojawia sie (...0) to koniec
 print("%.244f" % divisibility) #znowu dziala
 
 
