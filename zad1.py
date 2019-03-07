@@ -33,7 +33,6 @@ min_value = list[0]
 for i in range(1,len(list)):
     if min_value>list[i]:
         min_value=list[i]
-        j = i
 min_index = np.where(list==min_value)[0]
 print(list,'\nLowest value: ',min_value,'\nIndex: ',min_index)
 
