@@ -1,34 +1,25 @@
 import numpy as np
 import cs50
-
-#1 Write a function countField which calculates the field of a given figure. It takes the following input parameters:
-# - type: circle/rectangle/triangle/rhombus
-# - x & optional y.
-# For circle we get only x which stands for radius. For Rectangle x&y are the figure's sides, for triangle they are
-# accordingly the base and the height and for rhombus - diagonals (4p)
 #2 Write a function which takes sets of parameters of two figures and compares their fields. (4p)
 # The exemplary input is [[Circle, 4], [Rhombus, 2, 4]]
 # Expected output would be 'The first figure (Circle) has larger field'
 #3 Test your solutions
 
-def countField(type, x, y=1):
+def countField(type, x, y=None):
     x=int(x)
     y=int(y)
     #circle
-    if type =='circle':
+    if type =='kolo':
         field = (x**2)*np.pi
 
     #rectangle
-    if type =='rectangle':
+    if type =='prostkat':
         field = x*y
 
-    #triangle
-    if type =='triangle':
+    #triangle or rhombus
+    if type =='trojkat' or type =='romb':
         field = (1/2)*x*y
 
-    #rhombus
-    if type =='rhombus':
-        field = (x*y)/2
     return field
 
 def compare(type1,type2,x1,x2,y1=1,y2=1):
@@ -42,6 +33,21 @@ def compare(type1,type2,x1,x2,y1=1,y2=1):
         answ = "The second figure ("+type2+") has larger field"
     return print(answ)
 
-dane = np.array([['circle', 4, 0], ['rhombus', 2, 4]])
-dane[0,0] = input("XDDD")
-#compare(dane[0,0],dane[1,0],dane[0,1],dane[1,1],dane[0,2],dane[1,2])
+s,type,y=[True,None,0]
+dane = []
+while s==True:
+    type = input("Typ: ")
+    if type=='kolo' or type=='prostokat' or type=='trojkat' or type=='romb':
+        x = cs50.get_float("Wprowadz X")
+        if type != 'kolo':
+            y = cs50.get_float("Wprowadz Y")
+        if x>=0 and y>=0:
+            dane.append([type,x,y])
+            if len(dane) == 2:
+                compare(dane[0][0],dane[1][0],dane[0][1],dane[1][1],dane[0][2],dane[1][2])
+                s=False
+        else:
+            print("Zle dane")
+
+    if type!='kolo' and type!='prostokat' and type!='trojkat' and type!='romb':
+        print('Wprowadzono zla figure')
