@@ -1,21 +1,36 @@
+import requests
+# fetch data from  API
+#response = requests.get("https://bitbay.net/API/Public/BTCPLN/ticker.json")
+#data = response.json()
+#best_bid=data['bid']
+#best_ask=data['ask']
+#print('bid:',best_bid,'ask:',best_ask)
+
 #https://www.bitmarket.pl/json/BTCPLN/ticker.json
 #https://coinroom.com/api/ticker/BTC/PLN
 
-import requests
+def fetch_data(url,name):
+    response = requests.get(url)
+    data = response.json()
+    best_bid = data['bid']
+    best_ask = data['ask']
+    return [best_ask,best_bid,name]
 
-# fetch data from  API
-response = requests.get("https://bitbay.net/API/Public/BTCPLN/ticker.json")
-data = response.json()
-best_bid=data['bid']
-best_ask=data['ask']
-print('bid:',best_bid,'ask:',best_ask)
+dane = []
+dane.append(fetch_data('https://coinroom.com/api/ticker/BTC/PLN','coinroom.com'))
+dane.append(fetch_data('https://bitbay.net/API/Public/BTCPLN/ticker.json','bitbay.net'))
+dane.append(fetch_data('https://www.bitmarket.pl/json/BTCPLN/ticker.json','bitmarket.pl'))
+best_ask = 0
+best_bid = 0
 
-
-response2 = requests.get("https://coinroom.com/api/ticker/BTC/PLN")
-data2 = response2.json()
-bestbid2=data2['bid']
-bestask2=data2['ask']
-print(bestask2,bestbid2)
+for i in dane:
+    if i[0]>best_ask:
+        best_ask=i[0]
+        ask_name=i[2]
+    if i[1]>best_bid:
+        best_bid=i[1]
+        bid_name=i[2]
+print('Currently the',ask_name,'exchange market is better for buying whilst',bid_name,'is better for selling\nBest bid:',best_bid,'\nBest ask:',best_ask)
 
 #TASKS (11p)
 #To use the requests library you have to install it first. If you have pip and you're using python3 interpreter in your project
