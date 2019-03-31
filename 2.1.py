@@ -2,11 +2,17 @@ import cs50
 import numpy as np
 
 #0 Use alternative way of reading inputs - using library (0.5p)
-x=-1
-y=-1
-while x<0 or y<0:
-    x = cs50.get_int("x: ")
-    y = cs50.get_int("y: ")
+s=True
+x = cs50.get_float("x: ")
+y = cs50.get_float("y: ")
+
+while s==True:
+    if x == 0 or x < 0:
+        x = cs50.get_float("x: ")
+    elif y == 0 or y < 0:
+        y = cs50.get_float("y: ")
+    else:
+        s = False
 
 #1 Perimeter & field of circles with given radius X for the first circle & Y for the second one. (1p)
 first_circleP = 2*np.pi*x

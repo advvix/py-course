@@ -1,4 +1,6 @@
 import requests
+import numpy as np
+import time
 # fetch data from  API
 #response = requests.get("https://bitbay.net/API/Public/BTCPLN/ticker.json")
 #data = response.json()
@@ -32,6 +34,25 @@ for i in dane:
         bid_name=i[2]
 print('Currently the',ask_name,'exchange market is better for buying whilst',bid_name,'is better for selling\nBest bid:',best_bid,'\nBest ask:',best_ask)
 
+
+def fetch_user(url):
+    response = requests.get(url)
+    data = response.json()
+    id = data["results"][0]['id']['value']
+    first_name = data["results"][0]['name']['first']
+    last_name = data["results"][0]['name']['last']
+    time.sleep(0.2)
+    return [id,first_name,last_name]
+#https://randomuser.me/api/?inc=id,name,login
+
+
+
+dane = []
+for i in range(20):
+    dane.append(fetch_user('https://randomuser.me/api/?inc=id,name,login'))
+
+dane2 = np.array(dane)
+print(dane)
 #TASKS (11p)
 #To use the requests library you have to install it first. If you have pip and you're using python3 interpreter in your project
 # then simply pip3 install requests

@@ -50,3 +50,6 @@ while s==True:
 
     if type!='kolo' and type!='prostokat' and type!='trojkat' and type!='romb':
         print('Wprowadzono zla figure')
+
+
+#enum struktura

@@ -2,7 +2,6 @@ import numpy as np
 import cs50
 from termcolor import colored
 
-
 #1 Write a function countField which calculates the field of a given figure. It takes the following input parameters:
 # - type: circle/rectangle/triangle/rhombus
 # - x & optional y.
@@ -18,13 +17,9 @@ def countField(type, x, y=1):
     #rectangle
     if type ==2:
         field = x*y
-    #triangle
-    if type ==3:
+    #triangle or rhombus
+    if type ==3 or type==4:
         field = (1/2)*x*y
-    #rhombus
-    if type ==4:
-        field = (x*y)/2
-    #return print('Wynik: ',field)
     return print(colored('Wynik: ','green'),field)
 
 start,x,y = [-1,-1,-1]
@@ -35,27 +30,25 @@ while start==-1:
         while x<0:
             x = cs50.get_int("Wprowadz promien: ")
         countField(tp,x)
-
     if tp==2:
         print("Pole prostokata")
         while x<0 or y<0:
             x = cs50.get_int("Wprowadz x: ")
             y = cs50.get_int("Wprowadz y: ")
         countField(tp,x,y)
-
     if tp==3:
         print("Pole trojkata")
         while x<0 or y<0:
             x = cs50.get_int("Wprowadz podstawe: ")
             y = cs50.get_int("Wprowadz wysokosc: ")
         countField(tp,x,y)
-
     if tp==4:
         print("Pole rombu")
         while x<0 or y<0:
             x = cs50.get_int("Wprowadz przekatna(d1): ")
             y = cs50.get_int("Wprowadz przekatna(d2): ")
         countField(tp,x,y)
-
     if tp==5:
         start = 1
+    x=-1
+    y=-1
