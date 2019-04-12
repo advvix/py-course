@@ -3,8 +3,10 @@ import numpy as np
 #2 Write a function which takes sets of parameters of two figures and compares their fields. (4p)
 # The exemplary input is [[Circle, 4], [Rhombus, 2, 4]]
 # Expected output would be 'The first figure (Circle) has larger field'
-dane = [['trojkat',2,4],['kolo',4,2]]
-win = True
+
+dane = []
+
+
 def countField(zestaw):
     field = None
     if zestaw[0] == 'kolo': #circle
@@ -27,7 +29,8 @@ def compare(zestaw1,zestaw2):
         answ = "The second figure ("+zestaw2[0]+") has larger field"
     return print(answ)
 
-try:
+def validate_data():
+    c1 = True
     for i in [0,1]:
         if len(dane[i]) == 0:
             print('Wykryto pusta liste')
@@ -38,12 +41,18 @@ try:
                 print("Wymiary sa zle podane w zestawie",i+1)
         if len(dane[i])<2:
             print("Brak wymiarow w zestawie",i+1)
-        if (dane[i][0] == 'romb' or dane[i][0] == 'trojkat' or dane[i][0] == 'prostokat') and len(dane[i])==2:
+        if (dane[i][0] == 'romb' or dane[i][0] == 'trojkat' or dane[i][0] == 'prostokat') and len(dane[i])!=3:
             print(dane[i][0],"potrzebuje 2 wymiarow.")
-        if dane[i][0] == 'kolo' and len(dane[i])==3:
-            print(dane[i][0],"nie potrzebuje 2 wymiarow.")
-    else:
-        compare(dane[0],dane[1])
+            c1 = False
+        if dane[i][0] == 'kolo' and len(dane[i])>=3:
+            print(dane[i][0],"potrzebuje tylko 1 wymiar.")
+            c1 = False
+    return c1
+
+
+try:
+    if validate_data() == True:
+        compare(dane[0], dane[1])
 except:
     if not dane:
         print("Wykryto pusta liste")

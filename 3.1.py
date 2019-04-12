@@ -9,16 +9,19 @@ from termcolor import colored
 # accordingly the base and the height and for rhombus - diagonals (4p)
 #3 Test your solutions
 
+
 def countField(type, x, y=1):
     #circle
-    if type ==1:
+    if type == 1:
         field = (x**2)*np.pi
         print("Wynik: ",x**2,"* π")
     #rectangle
-    if type ==2:
+    if type == 2:
         field = x*y
     #triangle or rhombus
-    if type ==3 or type==4:
+    if type == 3:
+        field = (1/2)*x*y
+    if type == 4:
         field = (1/2)*x*y
     return print(colored('Wynik: ','green'),field)
 
