@@ -10,7 +10,7 @@ def f(x):
 def neg_f(x):
     return -f(x)
 
-minXY = [0,-2] # punkt startowy
+minXY = [-1.5,-2] # punkt startowy
 local_X_Y = minXY
 local_fmin = fmin(neg_f,local_X_Y,disp=False)
 minVAL = -1000
@@ -22,7 +22,7 @@ for i in range(500):
         minXY = xd
         minVAL = f(minXY)
 
-delta = 3.5
+delta = 4.5
 x_knots = linspace(minXY[0] - delta, minXY[0] + delta, 41)
 y_knots = linspace(minXY[1] - delta, minXY[1] + delta, 41)
 X, Y = meshgrid(x_knots, y_knots)
@@ -38,6 +38,7 @@ print(50*"#")
 
 ax = Axes3D(figure(figsize=(8, 6)))
 ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0.8)
+ax.plot([local_X_Y[0]], [local_X_Y[1]],[f(local_X_Y)], color='g', marker='o', markersize=10, label='punkt startowy')
 ax.plot([local_fmin[0]], [local_fmin[1]], [f(local_fmin)], color='r', marker='o', markersize=15, label='lokalne')
 ax.plot([minXY[0]], [minXY[1]], [f(minXY)], color='k', marker='o', markersize=10, label='globalne')
 ax.legend()

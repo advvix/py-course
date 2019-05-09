@@ -1,5 +1,3 @@
-
-# Optimizing exponential
 from scipy import linspace , sin,cos , exp, random, meshgrid, zeros
 from scipy.optimize import fmin
 from matplotlib.pyplot import plot, show, legend, figure, cm, contour, clabel
@@ -11,7 +9,7 @@ def f(x):
 def neg_f(x):
     return -f(x)
 
-x0 = random.randn(2)
+x0 = [0,-2]
 x_min = fmin(neg_f, x0)
 
 delta = 3

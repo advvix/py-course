@@ -1,7 +1,6 @@
 import requests
 import numpy as np
 import time
-import stopwatch
 
 #https://www.bitmarket.pl/json/BTCPLN/ticker.json
 #https://coinroom.com/api/ticker/BTC/PLN
@@ -19,7 +18,7 @@ def check_data(url1,name1,url2,name2):
     dane2.append(fetch_data(url1,name1))
     dane2.append(fetch_data(url2,name2))
     best_ask = 0
-    best_bid = 100000
+    best_bid = 100000000
     for i in dane2:
         if i[0] > best_ask:
             best_ask = i[0]
