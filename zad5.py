@@ -1,15 +1,11 @@
 import requests
 import numpy as np
 import time
-# fetch data from  API
-#response = requests.get("https://bitbay.net/API/Public/BTCPLN/ticker.json")
-#data = response.json()
-#best_bid=data['bid']
-#best_ask=data['ask']
-#print('bid:',best_bid,'ask:',best_ask)
+import stopwatch
 
 #https://www.bitmarket.pl/json/BTCPLN/ticker.json
 #https://coinroom.com/api/ticker/BTC/PLN
+#https://bitbay.net/API/Public/BTCPLN/ticker.json
 
 def fetch_data(url,name):
     response = requests.get(url)
@@ -18,44 +14,70 @@ def fetch_data(url,name):
     best_ask = data['ask']
     return [best_ask,best_bid,name]
 
-dane = []
-dane.append(fetch_data('https://coinroom.com/api/ticker/BTC/PLN','coinroom.com'))
-dane.append(fetch_data('https://bitbay.net/API/Public/BTCPLN/ticker.json','bitbay.net'))
-dane.append(fetch_data('https://www.bitmarket.pl/json/BTCPLN/ticker.json','bitmarket.pl'))
-best_ask = 0
-best_bid = 0
-
-for i in dane:
-    if i[0]>best_ask:
-        best_ask=i[0]
-        ask_name=i[2]
-    if i[1]>best_bid:
-        best_bid=i[1]
-        bid_name=i[2]
-print('Currently the',ask_name,'exchange market is better for buying whilst',bid_name,'is better for selling\nBest bid:',best_bid,'\nBest ask:',best_ask)
-
+def check_data(url1,name1,url2,name2):
+    dane2 = []
+    dane2.append(fetch_data(url1,name1))
+    dane2.append(fetch_data(url2,name2))
+    best_ask = 0
+    best_bid = 100000
+    for i in dane2:
+        if i[0] > best_ask:
+            best_ask = i[0]
+            ask_name = i[2]
+        if i[1] < best_bid:
+            best_bid = i[1]
+            bid_name = i[2]
+    print('Currently the', bid_name, 'exchange market is better for buying whilst', ask_name,
+          'is better for selling\nBest bid:', best_bid, '\nBest ask:', best_ask)
 
 def fetch_user(url):
     response = requests.get(url)
     data = response.json()
     id = data["results"][0]['id']['value']
+    username = data["results"][0]['login']['username']
     first_name = data["results"][0]['name']['first']
     last_name = data["results"][0]['name']['last']
-    time.sleep(0.2)
-    return [id,first_name,last_name]
-#https://randomuser.me/api/?inc=id,name,login
+    return [id,username,first_name,last_name,100000,10] # ostatnie dwie: ilosc pln,ilosc btc
 
+def wymiana_btc_pln(user1,user2):
+    liczba_bitcoinow = np.random.uniform(0.001,2)
+    bitcoin_to_pln_bid = liczba_bitcoinow * fetch_data('https://bitbay.net/API/Public/BTCPLN/ticker.json','bitbay.net')[1]
+    bitcoin_to_pln_ask = liczba_bitcoinow * fetch_data('https://bitbay.net/API/Public/BTCPLN/ticker.json','bitbay.net')[0]
+    if dane[user1][4] >= bitcoin_to_pln_bid and dane[user2][5] >= liczba_bitcoinow:
+        dane[user1][4] = dane[user1][4] - bitcoin_to_pln_bid
+        dane[user1][5] = dane[user1][5] + liczba_bitcoinow
+        dane[user2][4] = dane[user2][4] + bitcoin_to_pln_ask
+        dane[user2][5] = dane[user2][5] - liczba_bitcoinow
+        print(dane[user1][1], "exchanged", round(liczba_bitcoinow,3), "BTC with", dane[user2][1], "for", round(bitcoin_to_pln_ask,3), "PLN")
 
+check_data('https://bitbay.net/API/Public/BTCPLN/ticker.json','bitbay.net','https://www.bitmarket.pl/json/BTCPLN/ticker.json','bitmarket.pl')
 
 dane = []
-for i in range(20):
-    dane.append(fetch_user('https://randomuser.me/api/?inc=id,name,login'))
+k = 100 # liczba ludzi
+print("Trwa pobieranie bazy uzytkownikow...")
+while len(dane) < k:
+    try:
+        dane.append(fetch_user('https://randomuser.me/api/?inc=id,name,login'))
+    except:
+        pass
 
-dane2 = np.array(dane)
-print(dane)
+begin = time.time()
+for i in range(k):
+    l1 = np.random.randint(0,k)
+    l2 = np.random.randint(0,k)
+    while l1 == l2:
+        l2 = np.random.randint(0,k)
+    wymiana_btc_pln(l1,l2)
+    time.sleep(2/5)
+
+end = time.time()
+czass = end - begin
+print(int(czass))
+
+# BID - > kupno
+# ASK - > sprzedaż
+
 #TASKS (11p)
-#To use the requests library you have to install it first. If you have pip and you're using python3 interpreter in your project
-# then simply pip3 install requests
 
 # 1 Find another public API with cryptocurrency and compare prices. As an output print:
 # "Currently the XXX exchange market is better for buying whilst YYY is better for selling" (3p)
